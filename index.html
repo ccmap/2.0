@@ -35,28 +35,43 @@
   </script>
   <script src="bundle.js"></script>
   <script type="text/javascript">
-    CivMap.start({
-      attribution: '<a href="https://github.com/ccmap/ccmap.github.io">ccmap.github.io</a>',
-      tilesUrl: 'https://raw.githubusercontent.com/ccmap/tiles/master/',
-      borderCircleRadius: 13000,
-      basemaps: [
-        'terrain',
-        'biome',
-        'height',
-      ],
-      options: {
-        basemap: 'terrain',
-        installedPlugins: [
-          CivMap.FeaturesPlugin,
-          CivMap.WaypointsPlugin,
+    function doStart(featureGroup) {
+      CivMap.start({
+        attribution: '<a href="https://github.com/ccmap/ccmap.github.io">ccmap.github.io</a>',
+        tilesUrl: 'https://raw.githubusercontent.com/ccmap/tiles/master/',
+        borderCircleRadius: 13000,
+        basemaps: [
+          'terrain',
+          'biome',
+          'height',
         ],
-        plugins: {
-          features: {
-            featureGroup: {"features":[{"properties":{"name":"Quadrant cross"},"geometry":{"type":"line","positions":[[[0,-11000],[0,-2000]],[[0,11000],[0,2000]],[[-11000,0],[-2000,0]],[[11000,0],[2000,0]]]}},{"properties":{"name":"World border"},"geometry":{"type":"circle","radius":13000,"center":[0,0]}}],"properties":{"name":"Overlay"}},
+        options: {
+          basemap: 'terrain',
+          installedPlugins: [
+            CivMap.FeaturesPlugin,
+            CivMap.WaypointsPlugin,
+          ],
+          plugins: {
+            features: {
+              featureGroup: featureGroup,
+            },
           },
         },
-      },
-    }, function (ref) { window.civMap = ref; });
+      }, function (ref) { window.civMap = ref; });
+    }
+
+    var jsonUrl = null;
+    location.hash.slice(1).split('#').map(function (part) {
+      let [key, vals] = part.split('=', 2);
+      if (key == 'json') jsonUrl = vals;
+    });
+
+    if (jsonUrl) {
+      CivMap.getJSON(jsonUrl, doStart);
+    } else {
+      var defaultFeatureGroup = { "features": [{ "properties": { "name": "Quadrant cross" }, "geometry": { "type": "line", "positions": [[[0, -11000], [0, -2000]], [[0, 11000], [0, 2000]], [[-11000, 0], [-2000, 0]], [[11000, 0], [2000, 0]]] } }, { "properties": { "name": "World border" }, "geometry": { "type": "circle", "radius": 13000, "center": [0, 0] } }], "properties": { "name": "Overlay" } };
+      doStart(defaultFeatureGroup);
+    }
   </script>
 </body>
 
