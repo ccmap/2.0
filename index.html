@@ -38,12 +38,15 @@
     function doStart(featureGroup) {
       CivMap.start({
         attribution: '<a href="https://github.com/ccmap/ccmap.github.io">ccmap.github.io</a> | made by Gjum | map data <a href="https://github.com/ccmap/ccmap.github.io/wiki/Contributors">contributed by players</a>',
-        tilesUrl: 'https://raw.githubusercontent.com/ccmap/tiles/master/',
+        tilesUrl: 'http://35.197.219.64:44443/tiles/', // thanks okx!
         borderCircleRadius: 13000,
         basemaps: [
           'terrain',
-          'biome',
           'height',
+          'night',
+          'biome',
+          'simple',
+          'light',
         ],
         options: {
           basemap: 'terrain',
